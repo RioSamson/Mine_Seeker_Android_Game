@@ -27,7 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-
+    //testing testing testing
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
