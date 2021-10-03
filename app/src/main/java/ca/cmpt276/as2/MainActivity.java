@@ -27,7 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    //testing testing testing - done test
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
@@ -42,25 +41,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
 
+        //start coding here**
         gameManager = GameManager.getInstance();
-        populateListView();
         setupFloatingActionButton();
+        populateListView();
         setupListViewClicker();
-
     }
 
-    private void setupListViewClicker() {
-        ListView list = (ListView) findViewById(R.id.listViewGames);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                TextView textView = (TextView) viewClicked;
-                String message = "Clicked #" + position + " - " + textView.getText().toString();
-                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
+    //makes the ListView and populates it with the values we give
     private void populateListView() {
         //turn list of games into a string array
 
@@ -84,10 +72,24 @@ public class MainActivity extends AppCompatActivity {
         list.setAdapter(adapter);
     }
 
+    //makes it so that you can click individual parts in the view list(previous games)
+    private void setupListViewClicker() {
+        ListView list = (ListView) findViewById(R.id.listViewGames);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                TextView textView = (TextView) viewClicked;
+                String message = "Clicked #" + position + " - " + textView.getText().toString();
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    //makes the floating action button (+) on the bottom right and makes it go to another page
     private void setupFloatingActionButton() {
         binding.fab.setOnClickListener(view -> {
-            Intent i = SaveGame.makeLaunchIntent(MainActivity.this, "Enter Values");
-            startActivity(i);
+            Intent intent = SaveGame.makeLaunchIntent(MainActivity.this, "Enter Values");
+            startActivity(intent);
         });
     }
 }

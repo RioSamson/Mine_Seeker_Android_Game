@@ -36,10 +36,13 @@ public class SaveGame extends AppCompatActivity {
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
 
+        //everything till here was automatically made
+
+        //this makes the back button on the top left
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        //Handle the extra message when launched to add a game
+        //Handle the extra message when launched to add a game - makes toast saying enter values
         Intent i = getIntent();
         String message = i.getStringExtra(EXTRA_MESSAGE);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
@@ -56,13 +59,14 @@ public class SaveGame extends AppCompatActivity {
 
     }
 
-    //giving intent that include a string info
+    //giving intent to anyone who asks that include a string info - lets activities come to this one
     public static Intent makeLaunchIntent(Context c, String message) {
         Intent intent = new Intent(c, SaveGame.class);
         intent.putExtra(EXTRA_MESSAGE, message);
         return intent;
     }
 
+    //makes the save button on the top right
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //Inflate menu
