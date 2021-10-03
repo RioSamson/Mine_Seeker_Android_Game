@@ -10,11 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Assignment_2">
         <activity
-            android:name=".EditGame"
-            android:exported="true"
-            android:label="@string/title_activity_edit_game"
-            android:theme="@style/Theme.Assignment_2.NoActionBar" />
-        <activity
             android:name=".SaveGame"
             android:exported="true"
             android:label="@string/title_activity_save_game"
