@@ -44,11 +44,11 @@ public class MainActivity extends AppCompatActivity {
         gameManager = GameManager.getInstance();
         populateListView();
         setupFloatingActionButton();
-        setupListViewClick();
+        setupListViewClicker();
 
     }
 
-    private void setupListViewClick() {
+    private void setupListViewClicker() {
         ListView list = (ListView) findViewById(R.id.listViewGames);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
