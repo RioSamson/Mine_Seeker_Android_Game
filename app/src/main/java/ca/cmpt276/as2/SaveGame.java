@@ -6,10 +6,12 @@ import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -21,9 +23,13 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import ca.cmpt276.as2.databinding.ActivitySaveGameBinding;
+import ca.cmpt276.as2.model.Game;
+import ca.cmpt276.as2.model.GameManager;
+import ca.cmpt276.as2.model.PlayerScore;
 
 public class SaveGame extends AppCompatActivity {
     private static final String EXTRA_MESSAGE = "Extra - message";
+    private static final int NUM_PLAYERS = 2;
 
     private AppBarConfiguration appBarConfiguration;
     private ActivitySaveGameBinding binding;
@@ -47,13 +53,6 @@ public class SaveGame extends AppCompatActivity {
         String message = i.getStringExtra(EXTRA_MESSAGE);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 
-        //taking in the information from user input
-//        EditText userInP1Cards  = (EditText) findViewById(R.id.p1Cards);
-//        EditText userInP1Points  = (EditText) findViewById(R.id.p1Points);
-//        EditText userInP1Wagers  = (EditText) findViewById(R.id.p1Wagers);
-//        String one = userInP1Cards.getText().toString();
-//        int p1Cards = Integer.parseInt(one);
-
         TextView printScore = (TextView) findViewById(R.id.outScore1);
         printScore.setText("" + 30);
 
@@ -72,5 +71,46 @@ public class SaveGame extends AppCompatActivity {
         //Inflate menu
         getMenuInflater().inflate(R.menu.menu_save_game, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_favorite:
+                Game game = new Game(NUM_PLAYERS);
+                GameManager gameManager = GameManager.getInstance();
+
+                //read the user input and calculate the score
+                int player1Score = calculateScore(R.id.p1Cards, R.id.p1Points, R.id.p1Wagers);
+                int player2Score = calculateScore(R.id.p2Cards, R.id.p2Points, R.id.p2Wagers);
+                Toast.makeText(this, "Saved: " + player1Score + " vs " + player2Score, Toast.LENGTH_SHORT).show();
+
+                //add the scores in order to game and then add game to gameManager
+                game.addScores(player1Score);
+                game.addScores(player2Score);
+                game.saveGame();
+                gameManager.add(game);
+
+                finish(); // this makes it go to the home screen
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private int calculateScore(int cardsID, int pointsID, int wagersID) {
+        EditText editCards  = (EditText) findViewById(cardsID);
+        EditText editPoints  = (EditText) findViewById(pointsID);
+        EditText editWagers  = (EditText) findViewById(wagersID);
+
+        String stringCards = editCards.getText().toString();
+        int cards = Integer.parseInt(stringCards);
+        String stringPoints = editPoints.getText().toString();
+        int points = Integer.parseInt(stringPoints);
+        String stringWagers = editWagers.getText().toString();
+        int wagers = Integer.parseInt(stringWagers);
+
+        PlayerScore playerScore = new PlayerScore(cards, points, wagers);
+        return playerScore.getScore();
     }
 }

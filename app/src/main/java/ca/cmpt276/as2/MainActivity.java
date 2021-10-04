@@ -1,5 +1,6 @@
 package ca.cmpt276.as2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         //start coding here**
         gameManager = GameManager.getInstance();
         setupFloatingActionButton();
-        populateListView();
+//        populateListView();
         setupListViewClicker();
     }
 
@@ -52,22 +53,28 @@ public class MainActivity extends AppCompatActivity {
     private void populateListView() {
         //turn list of games into a string array
 
-        String[] myGames = {"rio", "is", "great"};
+        //DELETE LATER!!!! - testing list works
+        Game game1 = new Game(2);
+        game1.addScores(80);
+        game1.addScores(18);
+        game1.saveGame();
+        gameManager.add(game1);
+
+//        String[] myGames = {"rio", "is", "great"};
         //DONT DELETE  - NEED ONCE IMPLEMENTED USERINPUT AND CAN FILL GAME MANAGER!!!!!!
-        /*
+//        /*
         String[] myGames = new String[gameManager.length()];
         int i = 0;
         for (Game game : gameManager) {
             myGames[i] = game.toString();
         }
-    */
+//    */
 
         //builds the adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,
                 R.layout.items_for_listview,
                 myGames);
-
         ListView list = (ListView) findViewById(R.id.listViewGames);
         list.setAdapter(adapter);
     }
@@ -92,4 +99,11 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+//    //this refreshes page to update the list view???? - TODO!
+//    @Override
+//    protected void onStart() {
+//        populateListView();
+//        super.onStart();
+//    }
 }
