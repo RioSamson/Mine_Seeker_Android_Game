@@ -59,7 +59,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <EditText
-        android:id="@+id/editTextNumber15"
+        android:id="@+id/p2Cards"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -195,7 +195,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView10" />
 
     <EditText
-        android:id="@+id/editTextNumber17"
+        android:id="@+id/p2Points"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
@@ -222,7 +222,7 @@
         app:layout_constraintTop_toTopOf="@+id/textView11" />
 
     <EditText
-        android:id="@+id/editTextNumber19"
+        android:id="@+id/p2Wagers"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
