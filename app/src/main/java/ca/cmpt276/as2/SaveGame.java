@@ -57,8 +57,6 @@ public class SaveGame extends AppCompatActivity {
 
         //Handle the extra message when launched to add a game - makes toast saying enter values
         Intent i = getIntent();
-        String message = i.getStringExtra(EXTRA_MESSAGE);
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         liveScoreCalculation(R.id.p1Cards, R.id.p1Points, R.id.p1Wagers, R.id.outScore1);
         liveScoreCalculation(R.id.p2Cards, R.id.p2Points, R.id.p2Wagers, R.id.outScore2);
     }
@@ -76,8 +74,10 @@ public class SaveGame extends AppCompatActivity {
                 String wagersInput = editWagers.getText().toString();
                 TextView liveScoreUpdate = findViewById(scoreID);
                 if (!cardsInput.isEmpty() && !pointsInput.isEmpty() && !wagersInput.isEmpty()) {
-                    PlayerScore newScore = createPlayer(cardsID, pointsID, wagersID);
-                    liveScoreUpdate.setText(String.valueOf(newScore.getScore()));
+                    if (Integer.parseInt(cardsInput) != 0) {
+                        PlayerScore newScore = createPlayer(cardsID, pointsID, wagersID);
+                        liveScoreUpdate.setText(String.valueOf(newScore.getScore()));
+                    }
                 } else {
                     liveScoreUpdate.setText("-");
                 }
@@ -116,12 +116,24 @@ public class SaveGame extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_favorite:
-                Intent intent = getIntent();
-                int gameIndex = intent.getIntExtra("gameIndex", 0);
-                if (gameIndex >= 0) {
-                    editGame(gameIndex);
-                } else {
-                    createNewGame();
+                try {
+                    Intent intent = getIntent();
+                    int gameIndex = intent.getIntExtra("gameIndex", 0);
+                    if (gameIndex >= 0) {
+                        editGame(gameIndex);
+                    } else {
+                        createNewGame();
+                    }
+                } catch (IllegalArgumentException e) {
+                    EditText p1Cards  = (EditText) findViewById(R.id.p1Cards);
+                    String p1Input = p1Cards.getText().toString();
+                    EditText p2Cards  = (EditText) findViewById(R.id.p2Cards);
+                    String p2Input = p2Cards.getText().toString();
+                    if (p1Input.equals("0") || p2Input.equals("0")) {
+                        Toast.makeText(this, "Error: Illegal values with 0 cards.", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(this, "Error: Did not fill all values.", Toast.LENGTH_LONG).show();
+                    }
                 }
                 finish(); // this makes it go to the home screen
                 return true;
@@ -149,7 +161,6 @@ public class SaveGame extends AppCompatActivity {
         int player2Score = player2.getScore();
         gameBeingEdited.addPlayer(player2);
         gameBeingEdited.addScores(player2Score);
-        Toast.makeText(this, "Saved: " + player1Score + " vs " + player2Score, Toast.LENGTH_SHORT).show();
     }
 
     private void createNewGame() {
@@ -158,7 +169,6 @@ public class SaveGame extends AppCompatActivity {
         PlayerScore player2 = createPlayer(R.id.p2Cards, R.id.p2Points, R.id.p2Wagers);
         int player1Score = player1.getScore();
         int player2Score = player2.getScore();
-        Toast.makeText(this, "Saved: " + player1Score + " vs " + player2Score, Toast.LENGTH_SHORT).show();
         //add the scores in order to game and then add game to gameManager
         game.addScores(player1Score);
         game.addScores(player2Score);
