@@ -29,6 +29,10 @@ public class Game {
         scores.add(score);
     }
 
+    public void clearScores() {
+        scores.clear();
+    }
+
     //update Game before showing the menu again - find winners, scores
     public void saveGame() {
         int winningScore = scores.get(0);
@@ -69,8 +73,11 @@ public class Game {
         players.add(player);
     }
 
+    public void clearPlayers() {
+        players.clear();
+    }
+
     public PlayerScore getPlayer(int index) {
         return players.get(index);
     }
-
 }
