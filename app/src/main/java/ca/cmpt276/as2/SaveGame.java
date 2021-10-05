@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,9 +56,6 @@ public class SaveGame extends AppCompatActivity {
         Intent i = getIntent();
         String message = i.getStringExtra(EXTRA_MESSAGE);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-
-        TextView printScore = (TextView) findViewById(R.id.outScore1);
-        printScore.setText("" + 30);
     }
 
     protected void onResume() {
