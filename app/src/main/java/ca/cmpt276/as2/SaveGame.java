@@ -61,7 +61,6 @@ public class SaveGame extends AppCompatActivity {
         TextView printScore = (TextView) findViewById(R.id.outScore1);
         printScore.setText("" + 30);
         //updateUI();
-
     }
 
     protected void onResume() {
@@ -77,7 +76,8 @@ public class SaveGame extends AppCompatActivity {
 //    }
     public static Intent makeLaunchIntent(Context c, int gameIndex) {
         Intent intent = new Intent(c, SaveGame.class);
-        intent.putExtra("gameIndex", gameIndex); // <-- why do we need this? - Eric
+        intent.putExtra("gameIndex", gameIndex);
+//        intent.putExtra(EXTRA_MESSAGE, message); <---- add this in a long with a String message param later (ask Sam for what it was)
         return intent;
     }
 
@@ -198,9 +198,7 @@ public class SaveGame extends AppCompatActivity {
         int points = Integer.parseInt(stringPoints);
         String stringWagers = editWagers.getText().toString();
         int wagers = Integer.parseInt(stringWagers);
-
-        PlayerScore newPlayer = new PlayerScore(cards, points, wagers);
-        return newPlayer;
+        return new PlayerScore(cards, points, wagers);
     }
 
     private void updateUI() {

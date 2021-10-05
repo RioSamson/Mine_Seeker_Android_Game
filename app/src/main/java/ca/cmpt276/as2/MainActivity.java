@@ -76,28 +76,13 @@ public class MainActivity extends AppCompatActivity {
             i++;
         }
 
-//        Game[] myGames = new Game[gameManager.length()];
-//        int i = 0;
-//        for (Game game : gameManager) {
-//            myGames[i] = game;
-//        }
-
-//    */
-
-//        builds the adapter
+        // builds the adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,
                 R.layout.items_for_listview,
                 myGames);
         ListView list = (ListView) findViewById(R.id.listViewGames);
         list.setAdapter(adapter);
-
-//        ArrayAdapter<Game> adapter = new ArrayAdapter<Game>(
-//                this,
-//                R.layout.items_for_listview,
-//                myGames);
-//        ListView list = (ListView) findViewById(R.id.listViewGames);
-//        list.setAdapter(adapter);
     }
 
     //makes it so that you can click individual parts in the view list(previous games)
@@ -106,9 +91,9 @@ public class MainActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                TextView textView = (TextView) viewClicked;
-                String message = "Clicked #" + position + " - " + textView.getText().toString();
-                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+//                TextView textView = (TextView) viewClicked;
+//                String message = "Clicked #" + (position + 1) + " - " + textView.getText().toString();
+//                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
 
                 //Allows you to click on a previous game
                 Intent editPreviousGame = SaveGame.makeLaunchIntent(MainActivity.this, position);
