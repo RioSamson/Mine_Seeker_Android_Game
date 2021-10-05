@@ -35,9 +35,6 @@ public class SaveGame extends AppCompatActivity {
     private ActivitySaveGameBinding binding;
     private GameManager gameManager;
 
-//    Intent intent = getIntent();
-//    int gameIndex = intent.getIntExtra("gameIndex", 0);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +57,6 @@ public class SaveGame extends AppCompatActivity {
 
         TextView printScore = (TextView) findViewById(R.id.outScore1);
         printScore.setText("" + 30);
-        //updateUI();
     }
 
     protected void onResume() {
@@ -68,16 +64,9 @@ public class SaveGame extends AppCompatActivity {
         updateUI();
     }
 
-    //giving intent to anyone who asks that include a string info - lets activities come to this one
-//    public static Intent makeLaunchIntent(Context c, String message) {
-//        Intent intent = new Intent(c, SaveGame.class);
-//        intent.putExtra(EXTRA_MESSAGE, message); // <-- why do we need this? - Eric
-//        return intent;
-//    }
     public static Intent makeLaunchIntent(Context c, int gameIndex) {
         Intent intent = new Intent(c, SaveGame.class);
         intent.putExtra("gameIndex", gameIndex);
-//        intent.putExtra(EXTRA_MESSAGE, message); <---- add this in a long with a String message param later (ask Sam for what it was)
         return intent;
     }
 
@@ -96,35 +85,10 @@ public class SaveGame extends AppCompatActivity {
                 Intent intent = getIntent();
                 int gameIndex = intent.getIntExtra("gameIndex", 0);
                 if (gameIndex >= 0) {
-//                    gameManager.delete(gameIndex);
                     editGame(gameIndex);
-
-
-
                 } else {
                     createNewGame();
-//                    Game game = new Game(NUM_PLAYERS);
-//                    //GameManager gameManager = GameManager.getInstance();
-//
-//                    //read the user input and calculate the score
-//                    PlayerScore player1 = createPlayer(R.id.p1Cards, R.id.p1Points, R.id.p1Wagers);
-//                    PlayerScore player2 = createPlayer(R.id.p2Cards, R.id.p2Points, R.id.p2Wagers);
-//
-////                int player1Score = calculateScore(R.id.p1Cards, R.id.p1Points, R.id.p1Wagers);
-////                int player2Score = calculateScore(R.id.p2Cards, R.id.p2Points, R.id.p2Wagers);
-//                    int player1Score = player1.getScore();
-//                    int player2Score = player2.getScore();
-//                    Toast.makeText(this, "Saved: " + player1Score + " vs " + player2Score, Toast.LENGTH_SHORT).show();
-//
-//                    //add the scores in order to game and then add game to gameManager
-//                    game.addScores(player1Score);
-//                    game.addScores(player2Score);
-//                    game.addPlayer(player1);
-//                    game.addPlayer(player2);
-//                    game.saveGame();
-//                    gameManager.add(game);
                 }
-
                 finish(); // this makes it go to the home screen
                 return true;
             default:
@@ -169,23 +133,6 @@ public class SaveGame extends AppCompatActivity {
         game.saveGame();
         gameManager.add(game);
     }
-
-//    private int calculateScore(int cardsID, int pointsID, int wagersID) {
-//        EditText editCards  = (EditText) findViewById(cardsID);
-//        EditText editPoints  = (EditText) findViewById(pointsID);
-//        EditText editWagers  = (EditText) findViewById(wagersID);
-//
-//        String stringCards = editCards.getText().toString();
-//        int cards = Integer.parseInt(stringCards);
-//        String stringPoints = editPoints.getText().toString();
-//        int points = Integer.parseInt(stringPoints);
-//        String stringWagers = editWagers.getText().toString();
-//        int wagers = Integer.parseInt(stringWagers);
-//
-//        PlayerScore playerScore = new PlayerScore(cards, points, wagers);
-//
-//        return playerScore.getScore();
-//    }
 
     private PlayerScore createPlayer(int cardsID, int pointsID, int wagersID) {
         EditText editCards  = (EditText) findViewById(cardsID);

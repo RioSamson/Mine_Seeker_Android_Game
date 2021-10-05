@@ -53,22 +53,6 @@ public class MainActivity extends AppCompatActivity {
     //makes the ListView and populates it with the values we give
     private void populateListView() {
         //turn list of games into a string array
-
-        //DELETE LATER!!!! - testing list works
-//        PlayerScore player1 = new PlayerScore(5, 40, 3);
-//        PlayerScore player2 = new PlayerScore(3, 30, 2);
-//        Game game1 = new Game(2);
-//        game1.addPlayer(player1);
-//        game1.addPlayer(player2);
-//        game1.addScores(80);
-//        game1.addScores(20);
-//
-//        game1.saveGame();
-//        gameManager.add(game1);
-
-//        String[] myGames = {"rio", "is", "great"};
-        //DONT DELETE  - NEED ONCE IMPLEMENTED USERINPUT AND CAN FILL GAME MANAGER!!!!!!
-//        /*
         String[] myGames = new String[gameManager.length()];
         int i = 0;
         for (Game game : gameManager) {
@@ -91,11 +75,6 @@ public class MainActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-//                TextView textView = (TextView) viewClicked;
-//                String message = "Clicked #" + (position + 1) + " - " + textView.getText().toString();
-//                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
-
-                //Allows you to click on a previous game
                 Intent editPreviousGame = SaveGame.makeLaunchIntent(MainActivity.this, position);
                 startActivity(editPreviousGame);
             }
