@@ -33,6 +33,7 @@ public class SaveGame extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivitySaveGameBinding binding;
+    private GameManager gameManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class SaveGame extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
 
         //everything till here was automatically made
+        gameManager = GameManager.getInstance();
 
         //this makes the back button on the top left
         ActionBar actionBar = getSupportActionBar();
@@ -55,13 +57,16 @@ public class SaveGame extends AppCompatActivity {
 
         TextView printScore = (TextView) findViewById(R.id.outScore1);
         printScore.setText("" + 30);
-
     }
 
-    //giving intent to anyone who asks that include a string info - lets activities come to this one
-    public static Intent makeLaunchIntent(Context c, String message) {
+    protected void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
+    public static Intent makeLaunchIntent(Context c, int gameIndex) {
         Intent intent = new Intent(c, SaveGame.class);
-        intent.putExtra(EXTRA_MESSAGE, message);
+        intent.putExtra("gameIndex", gameIndex);
         return intent;
     }
 
@@ -77,20 +82,13 @@ public class SaveGame extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_favorite:
-                Game game = new Game(NUM_PLAYERS);
-                GameManager gameManager = GameManager.getInstance();
-
-                //read the user input and calculate the score
-                int player1Score = calculateScore(R.id.p1Cards, R.id.p1Points, R.id.p1Wagers);
-                int player2Score = calculateScore(R.id.p2Cards, R.id.p2Points, R.id.p2Wagers);
-                Toast.makeText(this, "Saved: " + player1Score + " vs " + player2Score, Toast.LENGTH_SHORT).show();
-
-                //add the scores in order to game and then add game to gameManager
-                game.addScores(player1Score);
-                game.addScores(player2Score);
-                game.saveGame();
-                gameManager.add(game);
-
+                Intent intent = getIntent();
+                int gameIndex = intent.getIntExtra("gameIndex", 0);
+                if (gameIndex >= 0) {
+                    editGame(gameIndex);
+                } else {
+                    createNewGame();
+                }
                 finish(); // this makes it go to the home screen
                 return true;
             default:
@@ -98,7 +96,45 @@ public class SaveGame extends AppCompatActivity {
         }
     }
 
-    private int calculateScore(int cardsID, int pointsID, int wagersID) {
+    private void editGame(int gameIndex) {
+        Game gameBeingEdited = gameManager.getGame(gameIndex);
+        // Clearing previous scores and players stored in game
+        gameBeingEdited.clearPlayers();
+        gameBeingEdited.clearScores();
+
+        // Creating new player1 with new values
+        // and re-adding player info and scores
+        PlayerScore player1 = createPlayer(R.id.p1Cards, R.id.p1Points, R.id.p1Wagers);
+        int player1Score = player1.getScore();
+        gameBeingEdited.addPlayer(player1);
+        gameBeingEdited.addScores(player1Score);
+
+        // Creating new player2 with new values
+        // and re-adding player info and scores
+        PlayerScore player2 = createPlayer(R.id.p2Cards, R.id.p2Points, R.id.p2Wagers);
+        int player2Score = player2.getScore();
+        gameBeingEdited.addPlayer(player2);
+        gameBeingEdited.addScores(player2Score);
+        Toast.makeText(this, "Saved: " + player1Score + " vs " + player2Score, Toast.LENGTH_SHORT).show();
+    }
+
+    private void createNewGame() {
+        Game game = new Game(NUM_PLAYERS);
+        PlayerScore player1 = createPlayer(R.id.p1Cards, R.id.p1Points, R.id.p1Wagers);
+        PlayerScore player2 = createPlayer(R.id.p2Cards, R.id.p2Points, R.id.p2Wagers);
+        int player1Score = player1.getScore();
+        int player2Score = player2.getScore();
+        Toast.makeText(this, "Saved: " + player1Score + " vs " + player2Score, Toast.LENGTH_SHORT).show();
+        //add the scores in order to game and then add game to gameManager
+        game.addScores(player1Score);
+        game.addScores(player2Score);
+        game.addPlayer(player1);
+        game.addPlayer(player2);
+        game.saveGame();
+        gameManager.add(game);
+    }
+
+    private PlayerScore createPlayer(int cardsID, int pointsID, int wagersID) {
         EditText editCards  = (EditText) findViewById(cardsID);
         EditText editPoints  = (EditText) findViewById(pointsID);
         EditText editWagers  = (EditText) findViewById(wagersID);
@@ -109,8 +145,34 @@ public class SaveGame extends AppCompatActivity {
         int points = Integer.parseInt(stringPoints);
         String stringWagers = editWagers.getText().toString();
         int wagers = Integer.parseInt(stringWagers);
+        return new PlayerScore(cards, points, wagers);
+    }
 
-        PlayerScore playerScore = new PlayerScore(cards, points, wagers);
-        return playerScore.getScore();
+    private void updateUI() {
+        Intent intent = getIntent();
+        int gameIndex = intent.getIntExtra("gameIndex", 0);
+        if (gameIndex >= 0) {
+            // Loading Player1 Information
+            int player1Index = 0;
+            loadPlayerInformation(player1Index, gameIndex, R.id.p1Cards, R.id.p1Points, R.id.p1Wagers);
+            // Loading Player2 Information
+            int player2Index = 1;
+            loadPlayerInformation(player2Index, gameIndex, R.id.p2Cards, R.id.p2Points, R.id.p2Wagers);
+        }
+    }
+
+    private void loadPlayerInformation(int playerIndex, int gameIndex, int cardsID, int pointsID, int wagersID ) {
+        int currentNumOfCards = gameManager.getGame(gameIndex).getPlayer(playerIndex).getNumCards();
+        int currentSumOfCards = gameManager.getGame(gameIndex).getPlayer(playerIndex).getSumOfCards();
+        int currentNumOfWagers = gameManager.getGame(gameIndex).getPlayer(playerIndex).getNumWager();
+        EditText CardsText = findViewById(cardsID);
+        EditText PointsText = findViewById(pointsID);
+        EditText WagersText = findViewById(wagersID);
+        String currentCards = String.valueOf(currentNumOfCards);
+        String currentPoints = String.valueOf(currentSumOfCards);
+        String currentWagers = String.valueOf(currentNumOfWagers);
+        CardsText.setText(currentCards);
+        PointsText.setText(currentPoints);
+        WagersText.setText(currentWagers);
     }
 }

@@ -18,6 +18,7 @@ import androidx.navigation.ui.NavigationUI;
 import ca.cmpt276.as2.databinding.ActivityMainBinding;
 import ca.cmpt276.as2.model.Game;
 import ca.cmpt276.as2.model.GameManager;
+import ca.cmpt276.as2.model.PlayerScore;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,26 +53,14 @@ public class MainActivity extends AppCompatActivity {
     //makes the ListView and populates it with the values we give
     private void populateListView() {
         //turn list of games into a string array
-
-        //DELETE LATER!!!! - testing list works
-//        Game game1 = new Game(2);
-//        game1.addScores(80);
-//        game1.addScores(18);
-//        game1.saveGame();
-//        gameManager.add(game1);
-
-//        String[] myGames = {"rio", "is", "great"};
-        //DONT DELETE  - NEED ONCE IMPLEMENTED USERINPUT AND CAN FILL GAME MANAGER!!!!!!
-//        /*
         String[] myGames = new String[gameManager.length()];
         int i = 0;
         for (Game game : gameManager) {
             myGames[i] = game.toString();
             i++;
         }
-//    */
 
-        //builds the adapter
+        // builds the adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,
                 R.layout.items_for_listview,
@@ -86,17 +75,17 @@ public class MainActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                TextView textView = (TextView) viewClicked;
-                String message = "Clicked #" + position + " - " + textView.getText().toString();
-                Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+                Intent editPreviousGame = SaveGame.makeLaunchIntent(MainActivity.this, position);
+                startActivity(editPreviousGame);
             }
         });
     }
 
     //makes the floating action button (+) on the bottom right and makes it go to another page
     private void setupFloatingActionButton() {
+        int newGame = -1;
         binding.fab.setOnClickListener(view -> {
-            Intent intent = SaveGame.makeLaunchIntent(MainActivity.this, "Enter Values");
+            Intent intent = SaveGame.makeLaunchIntent(MainActivity.this, newGame);
             startActivity(intent);
         });
     }
