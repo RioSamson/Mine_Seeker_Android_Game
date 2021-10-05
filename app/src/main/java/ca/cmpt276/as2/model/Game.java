@@ -17,6 +17,7 @@ public class Game {
     private final int NUM_PLAYERS;
     private final List<Integer> winners = new ArrayList<>();
     private final List<Integer> scores = new ArrayList<>();
+    private final List<PlayerScore> players = new ArrayList<>();
 
     public Game(int numPlayers) {
         this.NUM_PLAYERS = numPlayers;
@@ -63,4 +64,13 @@ public class Game {
 
         return str.toString();
     }
+
+    public void addPlayer(PlayerScore player) {
+        players.add(player);
+    }
+
+    public PlayerScore getPlayer(int index) {
+        return players.get(index);
+    }
+
 }

@@ -18,6 +18,7 @@ import androidx.navigation.ui.NavigationUI;
 import ca.cmpt276.as2.databinding.ActivityMainBinding;
 import ca.cmpt276.as2.model.Game;
 import ca.cmpt276.as2.model.GameManager;
+import ca.cmpt276.as2.model.PlayerScore;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         //start coding here**
         gameManager = GameManager.getInstance();
         setupFloatingActionButton();
-//        populateListView();
+        populateListView();
         setupListViewClicker();
     }
 
@@ -54,11 +55,16 @@ public class MainActivity extends AppCompatActivity {
         //turn list of games into a string array
 
         //DELETE LATER!!!! - testing list works
-        Game game1 = new Game(2);
-        game1.addScores(80);
-        game1.addScores(18);
-        game1.saveGame();
-        gameManager.add(game1);
+//        PlayerScore player1 = new PlayerScore(5, 40, 3);
+//        PlayerScore player2 = new PlayerScore(3, 30, 2);
+//        Game game1 = new Game(2);
+//        game1.addPlayer(player1);
+//        game1.addPlayer(player2);
+//        game1.addScores(80);
+//        game1.addScores(20);
+//
+//        game1.saveGame();
+//        gameManager.add(game1);
 
 //        String[] myGames = {"rio", "is", "great"};
         //DONT DELETE  - NEED ONCE IMPLEMENTED USERINPUT AND CAN FILL GAME MANAGER!!!!!!
@@ -67,16 +73,31 @@ public class MainActivity extends AppCompatActivity {
         int i = 0;
         for (Game game : gameManager) {
             myGames[i] = game.toString();
+            i++;
         }
+
+//        Game[] myGames = new Game[gameManager.length()];
+//        int i = 0;
+//        for (Game game : gameManager) {
+//            myGames[i] = game;
+//        }
+
 //    */
 
-        //builds the adapter
+//        builds the adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,
                 R.layout.items_for_listview,
                 myGames);
         ListView list = (ListView) findViewById(R.id.listViewGames);
         list.setAdapter(adapter);
+
+//        ArrayAdapter<Game> adapter = new ArrayAdapter<Game>(
+//                this,
+//                R.layout.items_for_listview,
+//                myGames);
+//        ListView list = (ListView) findViewById(R.id.listViewGames);
+//        list.setAdapter(adapter);
     }
 
     //makes it so that you can click individual parts in the view list(previous games)
@@ -88,22 +109,27 @@ public class MainActivity extends AppCompatActivity {
                 TextView textView = (TextView) viewClicked;
                 String message = "Clicked #" + position + " - " + textView.getText().toString();
                 Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+
+                //Allows you to click on a previous game
+                Intent editPreviousGame = SaveGame.makeLaunchIntent(MainActivity.this, position);
+                startActivity(editPreviousGame);
             }
         });
     }
 
     //makes the floating action button (+) on the bottom right and makes it go to another page
     private void setupFloatingActionButton() {
+        int newGame = -1;
         binding.fab.setOnClickListener(view -> {
-            Intent intent = SaveGame.makeLaunchIntent(MainActivity.this, "Enter Values");
+            Intent intent = SaveGame.makeLaunchIntent(MainActivity.this, newGame);
             startActivity(intent);
         });
     }
 
-//    //this refreshes page to update the list view???? - TODO!
-//    @Override
-//    protected void onStart() {
-//        populateListView();
-//        super.onStart();
-//    }
+    //this refreshes page to update the list view???? - TODO!
+    @Override
+    protected void onStart() {
+        super.onStart();
+        populateListView();
+    }
 }
