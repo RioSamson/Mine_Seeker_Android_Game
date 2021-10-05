@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //this refreshes page to update the list view???? - TODO!
+    //this refreshes page to update the list view????
     @Override
     protected void onStart() {
         super.onStart();
