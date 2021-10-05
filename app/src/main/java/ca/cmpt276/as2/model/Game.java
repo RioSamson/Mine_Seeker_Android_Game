@@ -80,4 +80,8 @@ public class Game {
     public PlayerScore getPlayer(int index) {
         return players.get(index);
     }
+
+    public LocalDateTime getLOCAL_DATE() {
+        return LOCAL_DATE;
+    }
 }

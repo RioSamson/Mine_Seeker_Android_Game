@@ -24,6 +24,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import ca.cmpt276.as2.databinding.ActivitySaveGameBinding;
 import ca.cmpt276.as2.model.Game;
 import ca.cmpt276.as2.model.GameManager;
@@ -183,6 +186,11 @@ public class SaveGame extends AppCompatActivity {
         Intent intent = getIntent();
         int gameIndex = intent.getIntExtra("gameIndex", 0);
         if (gameIndex >= 0) {
+            setTitle("Edit Game Score");
+            TextView showDate = findViewById(R.id.originalDate);
+            LocalDateTime date = gameManager.getGame(gameIndex).getLOCAL_DATE();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("LLL dd @ hh:mma");
+            showDate.setText(formatter.format(date));
             // Loading Player1 Information
             int player1Index = 0;
             loadPlayerInformation(player1Index, gameIndex, R.id.p1Cards, R.id.p1Points, R.id.p1Wagers);
