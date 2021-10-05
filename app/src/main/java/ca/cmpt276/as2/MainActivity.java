@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         //start coding here**
         gameManager = GameManager.getInstance();
         setupFloatingActionButton();
-//        populateListView();
+        populateListView();
         setupListViewClicker();
     }
 
@@ -54,11 +54,11 @@ public class MainActivity extends AppCompatActivity {
         //turn list of games into a string array
 
         //DELETE LATER!!!! - testing list works
-        Game game1 = new Game(2);
-        game1.addScores(80);
-        game1.addScores(18);
-        game1.saveGame();
-        gameManager.add(game1);
+//        Game game1 = new Game(2);
+//        game1.addScores(80);
+//        game1.addScores(18);
+//        game1.saveGame();
+//        gameManager.add(game1);
 
 //        String[] myGames = {"rio", "is", "great"};
         //DONT DELETE  - NEED ONCE IMPLEMENTED USERINPUT AND CAN FILL GAME MANAGER!!!!!!
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         int i = 0;
         for (Game game : gameManager) {
             myGames[i] = game.toString();
+            i++;
         }
 //    */
 
@@ -100,10 +101,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    //this refreshes page to update the list view???? - TODO!
-//    @Override
-//    protected void onStart() {
-//        populateListView();
-//        super.onStart();
-//    }
+    //this refreshes page to update the list view????
+    @Override
+    protected void onStart() {
+        super.onStart();
+        populateListView();
+    }
 }
