@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,8 +57,37 @@ public class SaveGame extends AppCompatActivity {
         String message = i.getStringExtra(EXTRA_MESSAGE);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 
-        TextView printScore = (TextView) findViewById(R.id.outScore1);
-        printScore.setText("" + 30);
+        liveScoreCalculation(R.id.p1Cards, R.id.p1Points, R.id.p1Wagers, R.id.outScore1);
+        liveScoreCalculation(R.id.p2Cards, R.id.p2Points, R.id.p2Wagers, R.id.outScore2);
+    }
+
+    private void liveScoreCalculation(int cardsID, int pointsID, int wagersID, int scoreID) {
+        EditText editCards  = (EditText) findViewById(cardsID);
+        EditText editPoints  = (EditText) findViewById(pointsID);
+        EditText editWagers  = (EditText) findViewById(wagersID);
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String cardsInput = editCards.getText().toString();
+                String pointsInput = editPoints.getText().toString();
+                String wagersInput = editWagers.getText().toString();
+                TextView liveScoreUpdate = findViewById(scoreID);
+                if (!cardsInput.isEmpty() && !pointsInput.isEmpty() && !wagersInput.isEmpty()) {
+                    PlayerScore newScore = createPlayer(cardsID, pointsID, wagersID);
+                    liveScoreUpdate.setText(String.valueOf(newScore.getScore()));
+                } else {
+                    liveScoreUpdate.setText("-");
+                }
+            }
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+        };
+        editCards.addTextChangedListener(textWatcher);
+        editPoints.addTextChangedListener(textWatcher);
+        editWagers.addTextChangedListener(textWatcher);
     }
 
     protected void onResume() {
