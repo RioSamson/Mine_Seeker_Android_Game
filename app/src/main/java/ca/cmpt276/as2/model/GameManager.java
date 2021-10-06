@@ -1,15 +1,29 @@
 package ca.cmpt276.as2.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
+
+import ca.cmpt276.as2.MainActivity;
+import ca.cmpt276.as2.SaveGame;
 
 /**
  * Represents the manager for games. Organizes games and its overall information
  * @author Rio Samson
  */
 public class GameManager implements Iterable<Game>{
-    private final List<Game> games = new ArrayList<>();
+    private List<Game> games = new ArrayList<>();
 
     /*
         Singleton Support
